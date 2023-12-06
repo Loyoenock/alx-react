@@ -744,3 +744,232 @@ __Repo:__
 * GitHub repository: alx-react
 * Directory: 0x09-react_redux_connectors_and_providers
 * File: task_5/dashboard/src/App/App.js
+
+21. Connect notifications: update the test suites
+
+* [NotificationReducer Test](./notificationReducer.test.js)
+* [App Test](/App.test.js)
+* [Notifications](./Notifications.js)
+* [Notifications Test](./Notifications.test.js)
+* [NotificationActionCreators Test](./notificationActionCreators.test.js)
+
+Modify the test suites to pass the tests:
+
+* Update notificationReducer.test.js to support the new attributes and default state
+* Clean up App.test.js for the function you just removed
+* Modify Notifications.js and Notifications.test.js to make sure that every tests pass correctly
+
+Add new tests:
+
+* Add a test in Notifications.test.js to verify that the function fetchNotifications is called when the component is mounted
+* Add a test for setLoadingState, setNotifications, and fetchNotifications to verify that they each create the right actions
+* Add a test for SET_LOADING_STATE to verify that it updates the reducer correctly
+
+Tips:
+
+* At this point, when you load the page, you should be able to see the list of notifications coming from the API using the developer tools or when clicking on the notifications toggle
+* Use some CSS to make the notifications panel readable
+* Look at valueSeq from Immutable to iterate on your list of notifications without having to use toJS()
+
+Requirements:
+
+* Make sure to update the different Proptypes so you don’t have any errors in the console
+* Make sure to create the new actions that the action creators are using
+
+__Repo:__
+
+* GitHub repository: alx-react
+* Directory: 0x09-react_redux_connectors_and_providers
+* File: task_5/dashboard/src/reducers/notificationReducer.test.js, task_5/dashboard/src/App/App.test.js, task_5/dashboard/src/Notifications/Notifications.js, task_5/dashboard/src/Notifications/Notifications.test.js, task_5/dashboard/src/actions/notificationActionCreators.test.js
+
+22. Selectors
+
+* [Notifications](./Notifications.js,)
+* [Notifications Test](./Notifications.test.js)
+
+To improve performance in your connector, you should always use selectors when you can. Let’s modify the Notifications connector to reuse the selector we built in the previous project:
+
+* Update Notifications.js to use getUnreadNotifications
+* Map the markAsAread action creator to the component, and use it for markNotificationAsRead
+
+Tips:
+
+* At this point, when you load the page, you should be able to see the list of notifications. Clicking on one notification should make it disappear from the list
+
+Requirements:
+
+* Make sure to update the selector to use the same valueSeq you created previously
+* Make sure to update the tests to work as expected
+* Make sure to create the new actions that the action creators are using
+
+__Repo:__
+
+* GitHub repository: alx-react
+* Directory: 0x09-react_redux_connectors_and_providers
+* File: task_6/dashboard/src/Notifications/Notifications.js, task_6/dashboard/src/Notifications/Notifications.test.js
+
+23. Connect courses: create a course selector
+
+* [selectors](./courseSelector.js)
+* [selectors Test](./courseSelector.test.js)
+
+In selectors/courseSelector.js, create a selector that will:
+
+* Get all the course entities from within the reducer
+* Return a List using valueSeq from Immutable
+
+Write a new file courseSelector.test.js, that will verify that the selector is working correctly
+
+__Repo:__
+
+* GitHub repository: alx-react
+* Directory: 0x09-react_redux_connectors_and_providers
+* File: task_7/dashboard/src/selectors/courseSelector.js, task_7/dashboard/src/selectors/courseSelector.test.js
+
+24. Connect courses: create a fetch courses function
+
+* [Course Action Creators](./courseActionCreators.js)
+
+In actions/courseActionCreators.js:
+
+Create a new function named fetchCourses, that will query the API in courses.json (provided in the project description, put it in your dist folder)
+
+* When the API returns the data, dispatch the action setCourses
+
+In courseActionCreators.test.js, create a test to verify that the fetch is working correctly
+
+__Repo:__
+
+* GitHub repository: alx-react
+* Directory: 0x09-react_redux_connectors_and_providers
+* File: task_7/dashboard/src/actions/courseActionCreators.js, task_7/dashboard/src/actions/courseActionCreators.test.js
+
+25. Connect the courses component
+
+* [CourseList](./CourseList.js)
+* [CourseList](./CourseList.test.js)
+
+In CourseList.js, connect the component to:
+
+* The three action creators: fetchCourses, selectCourse, and unSelectCourse
+* Connect the data to the list of courses using getListCourses selector
+* When the component mount, call the action fetchCourses
+
+Create a new function onChangeRow:
+
+* It will take two arguments: id (string), checked (boolean)
+* When checked is true, call the action selectCourse with the id
+* When checked is false, call the action unSelectCourse with the id
+
+Modify CourseListRow:
+
+* Pass a new prop, isChecked, to the component that will pass the isSelected attribute coming from the state of the reducer
+ Pass the onChangeRow function to the component
+* Modify the component to not use its local state anymore
+* In the file CourseList.test.js, create two new tests:
+
+* Verify that the action is dispatched when the component is mounted
+* Verify that the two actions are correctly dispatched when the onChangeRow function is called
+
+Tips:
+
+* At this point, when you load the page and you log in, you should be able to see the list of courses. Make sure that everything is working correctly using the developer tools or using the Redux tool
+* When checking or unchecking a row, you should see the state in the Redux tool updated. You should also see the change on the UI
+* Be careful that the API is sending Strings instead of Number for the IDs. You will probably need to adapt your reducers and tests
+* Delete the CourseShape file now
+
+Requirements:
+
+* Make sure to update the tests to work as expected
+
+__Repo:__
+
+* GitHub repository: alx-react
+* Directory: 0x09-react_redux_connectors_and_providers
+* File: task_7/dashboard/src/CourseList/CourseList.js, task_7/dashboard/src/CourseList/CourseList.test.js
+
+26. Memoized selectors: Redux Reselect
+
+* [selectors](./notificationSelector.js)
+
+Our current selectors are useful but they are not really performant. Imagine a very long list of notifications with multiple filters on the type and on the read status. This would require a lot of resources to compute. Memoized selectors are very powerful in this sense.
+
+Install Redux Reselect and create a new selector named getUnreadNotificationsByType in notificationSelector.js:
+
+* This selector should combine the state of the filter, and the list of notifications
+* When the filter is set to default, it should return all the unread notifications
+* When the filter is set to urgent, it should return all the unread and urgent notifications
+* Delete getUnreadNotifications
+
+__Repo:__
+
+* GitHub repository: alx-react
+* Directory: 0x09-react_redux_connectors_and_providers
+* File: task_8/dashboard/src/selectors/notificationSelector.js
+
+27. Memoized selectors: update the UI
+
+* [Notifications](./Notifications.js)
+
+In the Notifications component:
+
+* Update the component to use the new selector you just created
+* Map the component to the Action setNotificationFilter
+* Add two buttons under the text Here is the list of notifications. The first one contains ‼️. On click, it set the filters of notifications to URGENT. The second one contains 💠. On click, it sets the filter of notifications to DEFAULT
+
+__Repo:__
+
+* GitHub repository: alx-react
+* Directory: 0x09-react_redux_connectors_and_providers
+* File: task_8/dashboard/src/Notifications/Notifications.js
+
+28. Memoized selectors: update the test suite
+
+In Notifications.test.js, add two new tests:
+
+* Clicking on the first button should call setNotificationFilter with URGENT
+* Clicking on the second button should call setNotificationFilter with DEFAULT
+
+In notificationSelector.test.js:
+
+* Update the previous tests to work correctly
+* Create a new test to verify that the selector returns unread urgent notifications when the filter is set
+
+Tips:
+
+* At this point, you should be able to load the notifications panel, filter the list using the two new buttons, and mark items as read
+
+Requirements:
+
+* Make sure to update the tests to work as expected
+
+__Repo:__
+
+* GitHub repository: alx-react
+* Directory: 0x09-react_redux_connectors_and_providers
+* File: task_8/dashboard/src/Notifications/Notifications.test.js, task_8/dashboard/src/selectors/notificationSelector.test.js
+
+29. Container/Component
+
+* [Notifications](/Notifications.js)
+* [Notifications Test](./Notifications.test.js)
+* [Notifications Container](./NotificationsContainer.js)
+* [Notifications Container Test](./NotificationsContainer.test.js)
+
+Our components can become very verbose when we start adding connectors and actions. It is also becoming harder to tests what is supposed to be our React component, and the interations of the application. To simplify our architecture, we can use the concept of containers and components:
+
+* Create a new file NotificationsContainer.js. This component will take care of connecting to the state, and fetching the notifications on mount
+* The component should render the Notifications components and pass the required props to it
+* Modify the file Notifications.js. It should now become a functional component
+* Create a new test file for NotificationsContainer.js. It should make sure the fetching is happening on mount
+* Modify Notifications.test.js file to only support the new behavior of the file
+
+Tips:
+
+* No need to repeat every single prop, you can use the spread operator
+
+__Repo:__
+
+* GitHub repository: alx-react
+* Directory: 0x09-react_redux_connectors_and_providers
+* File: task_9/dashboard/src/Notifications/Notifications.js, task_9/dashboard/src/Notifications/Notifications.test.js, task_9/dashboard/src/Notifications/NotificationsContainer.js, task_9/dashboard/src/Notifications/NotificationsContainer.test.js
