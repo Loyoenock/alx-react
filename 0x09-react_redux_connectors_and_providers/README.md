@@ -1,0 +1,746 @@
+# 0x09. React Redux Connectors and Providers
+
+__Front-end | JavaScript | ES6 | React__
+
+## Resources
+
+__Read or watch:__
+
+* [Redux CreateStore](https://react-redux.js.org/api/connect)
+* [Redux Connect](https://react-redux.js.org/api/connect)
+* [Redux Provider](https://react-redux.js.org/api/provider)
+* [Redux Middleware](https://redux.js.org/tutorials/fundamentals/part-4-store#middleware)
+* [Redux Thunk](https://github.com/reduxjs/redux-thunk)
+* [Redux devtools](https://chromewebstore.google.com/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en)
+* [Redux Reselect](https://github.com/reduxjs/reselect)
+
+
+## Learning Objectives
+
+At the end of this project, you are expected to be able to [explain to anyone](https://fs.blog/feynman-learning-technique/), without the help of Google:
+
+* Redux connectors and how to use them
+* The different functions you can pass to a connector (mapStateToProps, mapDispatchToPros)
+* How to map an action creator to a component using a connector
+* How to map an async action creator to a component with Redux Thunk
+* What Redux Providers are and how to set up your app’s store
+* How you can improve a connector’s performance using Reselect
+* How to use Redux’s dev tools to debug the state of your application
+
+## Requirements
+
+* Allowed editors: vi, vim, emacs, Visual Studio Code
+* All your files should end with a new line
+* A README.md file, at the root of the folder of the project, is mandatory
+* All your files will be interpreted/compiled on Ubuntu 18.04 LTS using node 12.x.x and npm 6.x.x
+* Push all of your files, including package.json and .babelrc
+* All of your functions must be exported
+
+## Provided files
+
+### dashboard/dist/courses.json
+
+```
+
+[
+  {
+    "id": "1",
+    "name": "ES6",
+    "credit": 60
+  },
+  {
+    "id": "2",
+    "name": "Webpack",
+    "credit": 20
+  },
+  {
+    "id": "3",
+    "name": "React",
+    "credit": 40
+  }
+]
+```
+
+### dashboard/dist/login-success.json
+
+```
+
+{
+  "first_name": "Johann",
+  "last_name": "Salva",
+  "email": "johann.salva@holberton.nz",
+  "profile_picture": "http://placehold.it/32x32"
+}
+```
+
+### dashboard/dist/notifications.json
+
+```
+
+[
+  {
+    "id": "5debd76480edafc8af244228",
+    "author": {
+      "id": "5debd764a7c57c7839d722e9",
+      "name": {
+        "first": "Poole",
+        "last": "Sanders"
+      },
+      "email": "poole.sanders@holberton.nz",
+      "picture": "http://placehold.it/32x32",
+      "age": 25
+    },
+    "context": {
+      "guid": "2d8e40be-1c78-4de0-afc9-fcc147afd4d2",
+      "isRead": true,
+      "type": "urgent",
+      "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt."
+    }
+  },
+  {
+    "id": "5debd764507712e7a1307303",
+    "author": {
+      "id": "5debd7648ba8641ce0a34ea4",
+      "name": {
+        "first": "Norton",
+        "last": "Grimes"
+      },
+      "email": "norton.grimes@holberton.nz",
+      "picture": "http://placehold.it/32x32",
+      "age": 37
+    },
+    "context": {
+      "guid": "cec84b7a-7be4-4af0-b833-f1485433f66e",
+      "isRead": false,
+      "type": "urgent",
+      "value": "ut labore et dolore magna aliqua. Dignissim convallis aenean et tortor at risus viverra adipiscing. Ac tortor dignissim convallis aenean et. "
+    }
+  },
+  {
+    "id": "5debd76444dd4dafea89d53b",
+    "author": {
+      "id": "5debd764a7c57c7839d722e9",
+      "name": {
+        "first": "Poole",
+        "last": "Sanders"
+      },
+      "email": "poole.sanders@holberton.nz",
+      "picture": "http://placehold.it/32x32",
+      "age": 25
+    },
+    "context": {
+      "guid": "280913fe-38dd-4abd-8ab6-acdb4105f922",
+      "isRead": false,
+      "type": "urgent",
+      "value": "Non diam phasellus vestibulum lorem sed risus ultricies. Tellus mauris a diam maecenas sed"
+    }
+  },
+  {
+    "id": "5debd76485ee4dfd1284f97b",
+    "author": {
+      "id": "5debd764f07f50822352e252",
+      "name": {
+        "first": "Roach",
+        "last": "Cameron"
+      },
+      "email": "roach.cameron@holberton.nz",
+      "picture": "http://placehold.it/32x32",
+      "age": 26
+    },
+    "context": {
+      "guid": "89906f88-a02d-41ee-b214-daa0c54633e3",
+      "isRead": true,
+      "type": "urgent",
+      "value": "Odio pellentesque diam volutpat commodo sed egestas egestas"
+    }
+  },
+  {
+    "id": "5debd7644e561e022d66e61a",
+    "author": {
+      "id": "5debd764e66586653a8a33f3",
+      "name": {
+        "first": "Christy",
+        "last": "Collier"
+      },
+      "email": "christy.collier@holberton.nz",
+      "picture": "http://placehold.it/32x32",
+      "age": 27
+    },
+    "context": {
+      "guid": "f8d66cca-63ec-4f19-a422-a3e1c8f05a36",
+      "isRead": false,
+      "type": "urgent",
+      "value": "In hendrerit gravida rutrum quisque non tellus orci. Gravida dictum fusce ut placerat orci nulla pellentesque dignissim enim. Lorem mollis aliquam ut porttitor"
+    }
+  },
+  {
+    "id": "5debd7644aaed86c97bf9d5e",
+    "author": {
+      "id": "5debd764f5017139ce541857",
+      "name": {
+        "first": "Mason",
+        "last": "Douglas"
+      },
+      "email": "mason.douglas@holberton.nz",
+      "picture": "http://placehold.it/32x32",
+      "age": 31
+    },
+    "context": {
+      "guid": "de55f849-8fca-4ac7-afbb-41751f09d0c6",
+      "isRead": false,
+      "type": "default",
+      "value": "Cursus metus aliquam eleifend mi in nulla posuere. "
+    }
+  },
+  {
+    "id": "5debd76413f0d5e5429c28a0",
+    "author": {
+      "id": "5debd76456a6a030695e6a70",
+      "name": {
+        "first": "Marshall",
+        "last": "Wynn"
+      },
+      "email": "marshall.wynn@holberton.nz",
+      "picture": "http://placehold.it/32x32",
+      "age": 26
+    },
+    "context": {
+      "guid": "8094c267-ab84-47e1-8801-58ddd23f3b2a",
+      "isRead": false,
+      "type": "default",
+      "value": "Quam viverra orci sagittis eu volutpat odio facilisis mauris sit"
+    }
+  },
+  {
+    "id": "5debd7642e815cd350407777",
+    "author": {
+      "id": "5debd764f8452ef92346c772",
+      "name": {
+        "first": "Cherry",
+        "last": "Miles"
+      },
+      "email": "cherry.miles@holberton.nz",
+      "picture": "http://placehold.it/32x32",
+      "age": 25
+    },
+    "context": {
+      "guid": "3068c575-d619-40af-bf12-dece1ee18dd3",
+      "isRead": true,
+      "type": "default",
+      "value": "Est ante in nibh mauris cursus mattis molestie a iaculis. Eget lorem dolor sed viverra ipsum nunc aliquet bibendum enim"
+    }
+  },
+  {
+    "id": "5debd764c1127bc5a490a4d0",
+    "author": {
+      "id": "5debd76470dcced4a244fe7f",
+      "name": {
+        "first": "Sykes",
+        "last": "Fulton"
+      },
+      "email": "sykes.fulton@holberton.nz",
+      "picture": "http://placehold.it/32x32",
+      "age": 36
+    },
+    "context": {
+      "guid": "efb6c485-00f7-4fdf-97cc-5e12d14d6c41",
+      "isRead": false,
+      "type": "default",
+      "value": "Cursus risus at ultrices mi."
+    }
+  },
+  {
+    "id": "5debd7646ef31e0861ec1cab",
+    "author": {
+      "id": "5debd7645c8d811b8c6a235d",
+      "name": {
+        "first": "Valentine",
+        "last": "Juarez"
+      },
+      "email": "valentine.juarez@holberton.nz",
+      "picture": "http://placehold.it/32x32",
+      "age": 25
+    },
+    "context": {
+      "guid": "1d3918d0-67e6-44a4-9031-72d7750234de",
+      "isRead": true,
+      "type": "default",
+      "value": "Velit laoreet id donec ultrices tincidunt arcu non. Aliquet eget sit amet tellus cras adipiscing"
+    }
+  },
+  {
+    "id": "5debd764a4f11eabef05a81d",
+    "author": {
+      "id": "5debd764d0b0e7ed3e45ee6d",
+      "name": {
+        "first": "Maryann",
+        "last": "Larson"
+      },
+      "email": "maryann.larson@holberton.nz",
+      "picture": "http://placehold.it/32x32",
+      "age": 32
+    },
+    "context": {
+      "guid": "98fe7af4-8300-461f-a376-c147b2987616",
+      "isRead": false,
+      "type": "default",
+      "value": "Ac placerat vestibulum lectus mauris ultrices eros in cursus. Amet nisl suscipit adipiscing bibendum est ultricies integer. Lorem donec massa sapien faucibus et molestie ac"
+    }
+  },
+  {
+    "id": "5debd764af0fdd1fc815ad9b",
+    "author": {
+      "id": "5debd764fb6db3a5c21ce617",
+      "name": {
+        "first": "Naomi",
+        "last": "Hayes"
+      },
+      "email": "naomi.hayes@holberton.nz",
+      "picture": "http://placehold.it/32x32",
+      "age": 30
+    },
+    "context": {
+      "guid": "cd1a09cf-ad6e-4478-9662-18a292807e2e",
+      "isRead": false,
+      "type": "urgent",
+      "value": "Nulla malesuada pellentesque elit eget gravida cum sociis"
+    }
+  },
+  {
+    "id": "5debd76468cb5b277fd125f4",
+    "author": {
+      "id": "5debd764f7234e1d44828515",
+      "name": {
+        "first": "Knowles",
+        "last": "Vazquez"
+      },
+      "email": "knowles.vazquez@holberton.nz",
+      "picture": "http://placehold.it/32x32",
+      "age": 28
+    },
+    "context": {
+      "guid": "0f446b01-37c3-4884-9dc6-316f23b7711b",
+      "isRead": false,
+      "type": "urgent",
+      "value": "Elit eget gravida cum sociis natoque penatibus et. Congue mauris rhoncus aenean vel"
+    }
+  },
+  {
+    "id": "5debd764de9fa684468cdc0b",
+    "author": {
+      "id": "5debd764ec7c8d21449be7d7",
+      "name": {
+        "first": "Greta",
+        "last": "Benjamin"
+      },
+      "email": "greta.benjamin@holberton.nz",
+      "picture": "http://placehold.it/32x32",
+      "age": 23
+    },
+    "context": {
+      "guid": "4cc5bc3a-98fe-4392-b97d-6a41da1d944b",
+      "isRead": false,
+      "type": "default",
+      "value": "Leo vel fringilla est ullamcorper. Volutpat consequat mauris nunc congue"
+    }
+  }
+]
+```
+
+### Tasks
+
+0. Write mapStateToProps
+
+* [App](./App.js)
+
+Reuse the latest dashboard project you worked on in the React course 0x09-React_Redux_reducer and install react-redux
+
+Within the App/App.js file:
+
+* Create a function named mapStateToProps. This should connect the uiReducer you created and the property isLoggedIn that your component is already using
+* Import connect from Redux, and connect the mapStateToProps to the component
+
+__Repo:__
+
+* GitHub repository: alx-react
+* Directory: 0x09-react_redux_connectors_and_providers
+* File: task_0/dashboard/src/App/App.js
+
+1. Create a small store
+
+* [Index](./index.js)
+
+In the index.js file:
+
+* Create a store using createStore from Redux that would contain the uiReducer state
+* Implement a provider passing the store that you created to the main App
+
+__Repo:__
+
+* GitHub repository: alx-react
+* Directory: 0x09-react_redux_connectors_and_providers
+* File: task_0/dashboard/src/index.js
+
+2. Test MapStateToProps
+
+* [AppTest](App.test.js)
+
+Export the mapStateToProps function you created if you haven’t already, and in the App.test.js file:
+
+* Create a new suite to test the function
+* Create a test that verify that the function returns the right object when passing the
+
+```
+let state = fromJS({
+  isUserLoggedIn: true
+});
+```
+
+Should return { isLoggedIn: true }
+
+Tips:
+
+* At this point your app is not functional but you should be able to load the page without crashing
+* Remember that the state of uiReducer is using Map from Immutable
+
+Requirements:
+
+* No error should be displayed within the console
+* All the tests in the project should pass
+
+__Repo:__
+
+* GitHub repository: alx-react
+* Directory: 0x09-react_redux_connectors_and_providers
+* File: task_0/dashboard/src/App/App.test.js
+
+3. Update mapStateToProps
+
+* [App](/App.js)
+
+In the App.js file:
+
+* Update the mapStateToProps function to also pass to the component the value for displayDrawer. It should be connected to the Reducer attribute isNotificationDrawerVisible
+* Update the render function of the component to use the value displayDrawer coming from the props instead of the state
+
+__Repo:__
+
+* GitHub repository: alx-react
+* Directory: 0x09-react_redux_connectors_and_providers
+* File: task_1/dashboard/src/App/App.js
+
+4. Connect your actions creators
+
+* [App](./App.js)
+
+In the App.js file:
+
+* Connect to the component the actions creators displayNotificationDrawer and hideNotificationDrawer
+* You should use the simplified version for the mapDispatchToProps. No need to import bindActionCreators
+* Modify the render function of the component to use the functions passed within the props instead of the action within the Class component
+
+__Repo:__
+
+* GitHub repository: alx-react
+* Directory: 0x09-react_redux_connectors_and_providers
+* File: task_1/dashboard/src/App/App.js
+
+5. Refactor your code
+
+* [App](./App.js)
+
+In the App.js file:
+
+* You can delete the old function handleDisplayDrawer
+* You can delete the old function handleHideDrawer
+* Remove any state property related to the display of the drawer
+* Remove any binding in the constructor
+* You are now passing to your components props. You need to define propTypes and defaultProps
+
+__Repo:__
+
+* GitHub repository: alx-react
+* Directory: 0x09-react_redux_connectors_and_providers
+* File: task_1/dashboard/src/App/App.js
+
+6. Update your tests
+
+[App Test](./App.test.js)
+
+You can now refactor the App.test.js file:
+
+* You don’t need to test the functions handleDisplayDrawer and handleHideDrawer since everything is already tested using the Redux mechanism
+* You need to update the test you previously created to support the new attribute
+
+Tips:
+
+* At this point your app should be functional and able to display/hide the drawer using the Redux state
+* Remember that the state of uiReducer is using Map from Immutable
+
+__Repo:__
+
+* GitHub repository: alx-react
+* Directory: 0x09-react_redux_connectors_and_providers
+* File: task_1/dashboard/src/App/App.test.js
+
+7. Async actions & Thunk middleware
+
+* [Index](./index.js)
+
+Let’s implement the LoginRequest / logout actions creators accross the entire application. LoginRequest is calling an API and is Async. Therefore, Redux will not support it. We will need to use a middleware
+
+Install redux-thunk within your project. And in the index.js file, apply the middleware to your store
+
+__Repo:__
+
+* GitHub repository: alx-react
+* Directory: 0x09-react_redux_connectors_and_providers
+* File: task_2/dashboard/src/index.js
+
+8. Connect LoginRequest to the App
+
+* [App](./App.js)
+
+Modify the file App/App.js:
+
+* Connect the action creator loginRequest and map it to the login prop
+* Modify the component to use the new login function from the props instead of the one within the class
+* Refactor the component to remove any login or logout function and bind
+
+__Repo:__
+
+* GitHub repository: alx-react
+* Directory: 0x09-react_redux_connectors_and_providers
+* File: task_2/dashboard/src/App/App.js
+
+9. Connect user state to the Footer
+
+* [Footer](./Footer.js)
+
+Modify the file Footer/Footer.js
+
+* Create a mapStateToProps function
+* Map the user props to the user within the Redux state
+* Connect the Footer component to the function you created
+* Modify the render function and remove any use of the Context. Instead use the user prop
+
+__Repo:__
+
+* GitHub repository: alx-react
+* Directory: 0x09-react_redux_connectors_and_providers
+* File: task_2/dashboard/src/Footer/Footer.js
+
+10. Connect Logout action creator to the Header
+
+* [Header](./Header.js)
+
+Modify the file Header/Header.js
+
+* Create a mapStateToProps function
+* Map the user props to the user within the Redux state
+* Connect the Header component to the function you created
+* Connect the Header component to the logout action creator
+* Modify the render function and remove any use of the Context. Instead use the user prop. When the user clicks on the link, it should now dispatch the logout action creator
+
+__Repo:__
+
+* GitHub repository: alx-react
+* Directory: 0x09-react_redux_connectors_and_providers
+* File: task_2/dashboard/src/Header/Header.js
+
+11. Modify the uiReducer
+
+* [Reducers](./uiReducer.js)
+
+Now that we can have the entire login request and the entire feedback loop, let’s modify a few things within the reducer:
+
+* When the action LOGIN is passed, set the user within the state to the one passed within the action
+* When the LOGOUT action is passed, make sure to set the user to null
+
+__Repo:__
+
+* GitHub repository: alx-react
+* Directory: 0x09-react_redux_connectors_and_providers
+* File: task_2/dashboard/src/reducers/uiReducer.js
+
+12. Modify the test suites
+* [App](/App.test.js)
+* [Footer Test](./Footer.test.js)
+* [Header Test](/Header.test.js)
+* [Reducers](./uiReducer.test.js)
+
+Modify the test suites of the different components you modified:
+
+* In the App.test.js, Footer.test.js, and Header.test.js to import the Stateless components instead of the connected component
+* Remove any use of the mount function, and convert everything to use the shallow function
+* You should remove any use of setState within the tests and pass directly the props to the stateless components
+* Remove any test linked to the login, logout function within App, and Header
+* Add a test in uiReducer to support the new action you just created
+
+Tips:
+
+* At this point your app should be functional and able to display/hide the drawer, login/logout using the Redux state
+* Remember that the state of uiReducer is using Map from Immutable
+* You can now see that your components logic is simplified. They only respond to props change. The logic is happening within the action creators
+
+Requirements:
+
+* Do not forget to add defaultProps and PropTypes to any component receiving props
+* No error should be displayed within the console
+* All the tests in the project should pass
+
+__Repo:__
+
+* GitHub repository: alx-react
+* Directory: 0x09-react_redux_connectors_and_providers
+* File: task_2/dashboard/src/App/App.test.js, task_2/dashboard/src/Footer/Footer.test.js, task_2/dashboard/src/Header/Header.test.js, task_2/dashboard/src/reducers/uiReducer.test.js
+
+13. Understand how to use the Redux Chrome extension
+
+* [Index](./index.js)
+
+Install the Redux DevTools extension on your Chrome browser:
+
+* Modify the index.js to support the extension
+* Use the application and note the different actions being registered when you are logging in / logging out
+* Note that a version of the state is saved along the different actions and you can jump at a different moment of the user journey
+
+Tips:
+
+* Read the documentation of the extension to learn how to support the Chrome extension as well as the Thunk middleware
+* This extension can be one of the most powerful tool to debug an application. Make sure to become familiar with it
+
+__Repo:__
+
+* GitHub repository: alx-react
+* Directory: 0x09-react_redux_connectors_and_providers
+* File: task_3/dashboard/src/index.js
+
+
+14. Combine store: Root reducer
+
+[Reducers](./rootReducer.js)
+
+Since you have more than one reducer for your application, you will need to combine them into the store.
+
+Create a new file reducers/rootReducer.js, in this file, export a rootReducer:
+
+* the root should contain every reducer
+* courses maps to courseReducer
+* notifications maps to notificationReducer
+* ui maps to uiReducer
+
+__Repo:__
+
+* GitHub repository: alx-react
+* Directory: 0x09-react_redux_connectors_and_providers
+* File: task_4/dashboard/src/reducers/rootReducer.js
+
+15. Combine store: modify the application
+
+* [Index](./index.js)
+
+In the index.js, create the store using the root reducer instead of only the ui reducer:
+
+* Any component connected to the state will probably need to be updated since you added a nested level
+
+__Repo:__
+
+* GitHub repository: alx-react
+* Directory: 0x09-react_redux_connectors_and_providers
+* File: task_4/dashboard/src/index.js
+
+16. Combine store: write the tests
+
+* [App](./App.test.js)
+* {Reducers Test](./rootReducer.test.js)
+
+Modify the test suites:
+
+* In the App.test.js, modify mapStateToProps to correctly work with the new format of the reducer
+* Create a rootReducer.test.js file to test the root reducer’s initial state for the following structure:
+
+```
+{
+  courses: Map {},
+  notifications: Map {},
+  ui: Map {}
+}
+```
+
+Requirements:
+
+* No errors in the browser’s console
+* All tests should pass
+* Use combineReducer to create the root reducer
+
+__Repo:__
+
+* GitHub repository: alx-react
+* Directory: 0x09-react_redux_connectors_and_providers
+* File: task_4/dashboard/src/App/App.test.js, task_4/dashboard/src/reducers/rootReducer.test.js
+
+17. Connect notifications: New Action Creator
+
+* [NotificationAction Creators](./notificationActionCreators.js)
+
+We now know how to connect a simple component to a reducer. Let’s work on connecting a more complex component to the the entire API.
+
+Add the following three action creators to notificationActionCreators.js
+
+* setLoadingState whose parameter is a boolean. It will send the SET_LOADING_STATE action and the boolean.
+* setNotifications whose parameter is an array. It will send the FETCH_NOTIFICATIONS_SUCCESS action with the data.
+* fetchNotifications (which does not have a parameter). Calling it will dispatch setLoadingState with the boolean set to true
+*	It fetches /notifications.json
+*	Once the fetch is realized, it will dispatch setNotifications with the data
+*	At the end of the query it sets the loading state to false again
+
+__Repo:__
+
+* GitHub repository: alx-react
+* Directory: 0x09-react_redux_connectors_and_providers
+* File: task_5/dashboard/src/actions/notificationActionCreators.js
+
+18. Connect notifications: Improve reducer
+
+In the function notificationReducer within notificationReducer.js:
+
+* Make sure to add a loading attribute to the initial state.
+* Modify the notifications object to have the right initial state when merging the data coming from the API
+* Create a SET_LOADING_STATE case and update the state accordingly
+* Modify the FETCH_NOTIFICATIONS_SUCCESS case to perform a mergeDeep with the data
+
+__Repo:__
+
+* GitHub repository: alx-react
+* Directory: 0x09-react_redux_connectors_and_providers
+* File: task_5/dashboard/src/reducers/notificationReducer.js
+
+19. Connect notifications to the reducer
+
+* [Notifications](./Notifications.js)
+
+In the Notifications.js component:
+
+* Map the prop listNotifications to the messages within the notifications state
+* Map the action fetchNotifications to the component
+* In componentDidMount, call fetchNotifications
+
+__Repo:__
+
+* GitHub repository: alx-react
+* Directory: 0x09-react_redux_connectors_and_providers
+* File: task_5/dashboard/src/Notifications/Notifications.js
+
+20. Connect notifications: clean up
+
+With this new behavior, let’s clean up old functions and test data
+
+* Delete NotificationItemShape.js
+* Remove the notification list and delete markNotificationAsRead within App.js
+
+__Repo:__
+
+* GitHub repository: alx-react
+* Directory: 0x09-react_redux_connectors_and_providers
+* File: task_5/dashboard/src/App/App.js
